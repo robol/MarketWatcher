@@ -18,7 +18,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
@@ -30,7 +29,7 @@ public class YahooFinanceQuoteEngine extends TimerTask implements StockQuoteEngi
     private ArrayList<Stock> stocks;
     private boolean active = true;
     private boolean updateInProgress = false;
-    private Timer timer;
+    private final Timer timer;
     
     public YahooFinanceQuoteEngine() {
         timer = new Timer();
@@ -43,6 +42,9 @@ public class YahooFinanceQuoteEngine extends TimerTask implements StockQuoteEngi
         this.updateStockQuotes();
     }
     
+    /**
+     * Clean data and deactivate the timer.
+     */
     @Override
     public void finalize() {
         timer.cancel();
@@ -80,8 +82,12 @@ public class YahooFinanceQuoteEngine extends TimerTask implements StockQuoteEngi
         }
     }
     
-    private Double parseFieldDouble(Element quoteElement, String fieldName) {
+    private double parseFieldDouble(Element quoteElement, String fieldName) {
         return Double.parseDouble(parseField(quoteElement, fieldName));
+    }
+    
+    private long parseFieldLong (Element quoteElement, String fieldName) {
+        return Long.parseLong(parseField(quoteElement, fieldName));
     }
     
     private void updateQuote(Stock s) {
@@ -103,10 +109,22 @@ public class YahooFinanceQuoteEngine extends TimerTask implements StockQuoteEngi
             if (symbols.getLength() >= 1) {
                 Element quote = (Element) symbols.item(0);
                 
-                /* Update data inside the Stock */
+                // We need to temporarly disable the notifications to not cause
+                // a huge amount of work that is not needed. We will trigger
+                // a unique notification after all the updates have been
+                // performed. 
                 s.disableNotifications();
+                
+                // Update data inside the Stock
                 s.updateQuote(parseFieldDouble(quote, "LastTradePriceOnly"));
                 s.updateName(parseField(quote, "Name"));
+                s.updateDayHigh(parseFieldDouble(quote, "DaysHigh"));
+                s.updateDayLow(parseFieldDouble(quote, "DaysLow"));
+                s.updateVolume(parseFieldLong(quote, "Volume"));
+                s.updateChange(parseFieldDouble(quote, "Change"));
+                
+                // Re-enable notifications and trigger the listeners so they
+                // can reload the changes.
                 s.enableNotifications();
                 s.triggerListeners();
             }
@@ -115,7 +133,6 @@ public class YahooFinanceQuoteEngine extends TimerTask implements StockQuoteEngi
         } catch (Exception ex) {
             Logger.getLogger(YahooFinanceQuoteEngine.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
     }
 
     @Override

@@ -16,6 +16,10 @@ public class Stock {
     private String ticket = null;
     private String name = null;
     private double currentQuote = 0.0;
+    private double dayLow = 0.0;
+    private double dayHigh = 0.0;
+    private long volume = 0;
+    private double change = 0.0;
     
     private ArrayList<StockListener> listeners;
     
@@ -75,6 +79,42 @@ public class Stock {
     public void updateQuote(double quote) {
        this.currentQuote = quote; 
        this.triggerListeners();
+    }
+    
+    public void updateDayHigh(double dayHigh) {
+        this.dayHigh = dayHigh;
+        triggerListeners();
+    }
+    
+    public double getDayHigh() {
+        return this.dayHigh;
+    }
+    
+    public void updateDayLow(double dayLow) {
+        this.dayLow = dayLow;
+        triggerListeners();
+    }
+    
+    public double getDayLow() {
+        return dayLow;
+    }
+    
+    public void updateVolume (long volume) {
+        this.volume = volume;
+        triggerListeners();
+    }
+    
+    public long getVolume () {
+        return this.volume;
+    }
+    
+    public void updateChange (double change) {
+        this.change = change;
+        triggerListeners();
+    }
+    
+    public double getChange () {
+        return this.change;
     }
     
     public void disableNotifications() {
