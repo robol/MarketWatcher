@@ -70,9 +70,23 @@ public class YahooFinanceQuoteEngine extends TimerTask implements StockQuoteEngi
         updateInProgress = false;
     }
     
+    private String parseField(Element quoteElement, String fieldName) {
+        NodeList subElements = quoteElement.getElementsByTagName(fieldName);
+        if (subElements.getLength() > 0) {
+            return subElements.item(0).getTextContent();
+        }
+        else {
+            return "";
+        }
+    }
+    
+    private Double parseFieldDouble(Element quoteElement, String fieldName) {
+        return Double.parseDouble(parseField(quoteElement, fieldName));
+    }
+    
     private void updateQuote(Stock s) {
         try {
-            String api_url = "https://query.yahooapis.com/v1/public/yql/?q=";
+            String api_url = "http://query.yahooapis.com/v1/public/yql/?q=";
             String query = "select*from yahoo.finance.quote where symbol=\"" +
                     s.getTicket() + "\"";
             String options = "env=store://datatables.org/alltableswithkeys";
@@ -88,14 +102,18 @@ public class YahooFinanceQuoteEngine extends TimerTask implements StockQuoteEngi
             
             if (symbols.getLength() >= 1) {
                 Element quote = (Element) symbols.item(0);
-                Node price = quote.getElementsByTagName("LastTradePriceOnly").item(0);
-                s.updateQuote(Double.parseDouble(price.getTextContent()));
+                
+                /* Update data inside the Stock */
+                s.disableNotifications();
+                s.updateQuote(parseFieldDouble(quote, "LastTradePriceOnly"));
+                s.updateName(parseField(quote, "Name"));
+                s.enableNotifications();
+                s.triggerListeners();
             }
             else
                 s.updateQuote(0.0);
         } catch (Exception ex) {
-            Logger.getLogger(YahooFinanceQuoteEngine.class.getName()).log(Level.SEVERE, null, ex);            
-            s.updateQuote(0.0);
+            Logger.getLogger(YahooFinanceQuoteEngine.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }
@@ -110,15 +128,22 @@ public class YahooFinanceQuoteEngine extends TimerTask implements StockQuoteEngi
         stocks.remove(s);
     }
     
+    /**
+     * Test function used to check if th FinanceQuoteEngine actually
+     * works. 
+     * 
+     * @param args Must be a length 1 array containing a ticker. 
+     */
     public static void main(String[] args) {
         YahooFinanceQuoteEngine e = new YahooFinanceQuoteEngine();
         final Stock s = new Stock(args[0]);
         e.addStock(s);
         
-        s.addListener(new StockQuoteListener() {
+        s.addListener(new StockListener() {
             @Override
-            public void updateQuote(double quote) {
-                System.out.format("%s: %e\n", s.getTicket(), quote);
+            public void updated(Stock s) {
+                System.out.format("%s (%s): %e\n", s.getName(), 
+                        s.getTicket(), s.getQuote());
             }
         });
     }

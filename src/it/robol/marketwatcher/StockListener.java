@@ -9,7 +9,7 @@ package it.robol.marketwatcher;
  *
  * @author robol
  */
-public interface StockQuoteListener {
+public interface StockListener {
     
     /**
      * Called when the quote of the associated Stock
@@ -17,6 +17,6 @@ public interface StockQuoteListener {
      * 
      * @param quote The value of the new quote
      */
-    public void updateQuote(double quote);
+    public void updated(Stock s);
     
 }
