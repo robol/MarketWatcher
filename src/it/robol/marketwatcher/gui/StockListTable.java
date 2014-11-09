@@ -6,6 +6,8 @@
 package it.robol.marketwatcher.gui;
 
 import it.robol.marketwatcher.Stock;
+import it.robol.marketwatcher.Storage;
+import it.robol.marketwatcher.WatchList;
 
 /**
  *
@@ -16,7 +18,10 @@ public class StockListTable extends javax.swing.JTable {
     private StockTableModel model = null;
 
     public StockListTable() {
-        model = new StockTableModel();
-        setModel(model);
+        Storage s = Storage.getInstance();
+        WatchList w = s.getWatchLists()[0];
+        w.connectToQuoteEngine(MarketWatcherApp.getStockQuoteEngine());
+        
+        setModel (new StockTableModel(w));
     }
 }

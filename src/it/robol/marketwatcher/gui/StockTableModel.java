@@ -8,6 +8,7 @@ package it.robol.marketwatcher.gui;
 import it.robol.marketwatcher.Stock;
 import it.robol.marketwatcher.StockListener;
 import it.robol.marketwatcher.WatchList;
+import it.robol.marketwatcher.WatchListListener;
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 
@@ -16,10 +17,13 @@ import javax.swing.table.AbstractTableModel;
  * @author robol
  */
 public class StockTableModel extends AbstractTableModel {
+      
+    private WatchList list;
+    private WatchListListener listlistener;
     
     private class StockEntry {
         public Stock stock;
-        public StockListener listener;
+        public StockListener listener;        
         
         public StockEntry (Stock s, StockListener l) {
             stock = s;
@@ -40,10 +44,38 @@ public class StockTableModel extends AbstractTableModel {
      * of Stocks will be used as reference. 
      */
     public StockTableModel(WatchList list) {
-        // stocks = list.getStockList();
+        this();
+        
+        this.list = list;
+        
+        for (Stock s : list.getStockList()) {
+            addStock (s);
+        }
+        
+        listlistener = new WatchListListener() {
+            @Override
+            public void stockAdded(Stock s) {
+                addStock(s);
+            }
+
+            @Override
+            public void stockRemoved(Stock s) {
+                removeStock(s);
+            }
+        };
+        
+        list.addListener (listlistener);
     }
     
-    public void addStock(Stock s) {        
+    public void dispose() {
+        list.removeListener(listlistener);
+        
+        for (StockEntry s : stocks) {
+            s.stock.removeListener(s.listener);
+        }
+    }
+    
+    public final void addStock(Stock s) {        
         StockListener l = new StockListener() {
             @Override
             public void updated(Stock s) {

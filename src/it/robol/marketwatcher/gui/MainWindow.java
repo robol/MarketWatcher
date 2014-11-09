@@ -30,6 +30,8 @@ public class MainWindow extends javax.swing.JFrame {
                 }
             }
         }
+        
+        
                 
         initComponents();
     }
@@ -120,7 +122,7 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_stockSearchButtonActionPerformed
 
     /**
-     * @param args the command line arguments
+     * 
      */
     public static MainWindow createInstance() {
         /* Create and display the form */
