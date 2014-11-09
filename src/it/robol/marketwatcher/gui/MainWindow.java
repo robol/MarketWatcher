@@ -5,6 +5,9 @@
  */
 package it.robol.marketwatcher.gui;
 
+import it.robol.marketwatcher.Stock;
+import it.robol.marketwatcher.Storage;
+import it.robol.marketwatcher.WatchList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.UIManager;
@@ -21,17 +24,19 @@ public class MainWindow extends javax.swing.JFrame {
      */
     public MainWindow() {
         
+	/* Load the Nimbus Look And Feel, if it's available */
         for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
             if ("Nimbus".equals(info.getName())) {
                 try {
                     UIManager.setLookAndFeel(info.getClassName());
-                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+                } catch (ClassNotFoundException | 
+			 InstantiationException | 
+			 IllegalAccessException | 
+			 UnsupportedLookAndFeelException ex) {
                     Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
-        
-        
                 
         initComponents();
     }
@@ -118,7 +123,9 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
     private void stockSearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stockSearchButtonActionPerformed
-        
+        String ticket = stockSearchTextField.getText();
+        WatchList w = Storage.getInstance().getWatchLists()[0];
+        w.addStock (new Stock (ticket));
     }//GEN-LAST:event_stockSearchButtonActionPerformed
 
     /**

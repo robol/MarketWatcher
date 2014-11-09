@@ -85,15 +85,19 @@ public class StockTableModel extends AbstractTableModel {
         
         s.addListener(l);
         stocks.add(new StockEntry (s, l));
+        
+        fireTableRowsInserted(stocks.size() - 1, stocks.size());
     }
     
     public void removeStock(Stock s) {
         for (StockEntry entry : stocks) {
             if (entry.stock == s) {
                 s.removeListener (entry.listener);
-                stocks.remove (s);
+                stocks.remove (entry);
             }
         }
+        
+        fireTableDataChanged();
     }
 
     @Override
@@ -128,9 +132,11 @@ public class StockTableModel extends AbstractTableModel {
             case 0:
                 return s.getName();
             case 1:
-                return s.getQuote();
+                double quote = s.getQuote();
+                return (quote == 0.0) ? "Not available" : quote;
             case 2:
-                return s.getChange();
+                double change = s.getChange();
+                return (change == 0.0) ? "Not available" : change;
             default:
                 return "";
         }

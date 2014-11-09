@@ -36,6 +36,7 @@ public class Stock {
     public Stock(String ticket) {
         this.listeners = new ArrayList<>();
         this.ticket = ticket;
+        this.name = ticket;
     }
     
     /**
