@@ -27,4 +27,10 @@ public class Transaction {
         this.stock = stock;
     }
     
+    public Stock getStock() { return stock; }
+    public double getPricePaid() { return pricePaid; }
+    public double getOpenCommission() { return openCommission; }
+    public double getCloseCommission() { return closeCommission; }
+    public int getQuantity() { return quantity; }
+    
 }
