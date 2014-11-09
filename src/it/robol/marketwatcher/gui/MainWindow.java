@@ -9,8 +9,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.UIManager.LookAndFeelInfo;
 import com.seaglasslookandfeel.SeaGlassLookAndFeel;
+import com.jtattoo.plaf.aero.AeroLookAndFeel;
+import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
 /**
  *
@@ -23,8 +24,12 @@ public class MainWindow extends javax.swing.JFrame {
      */
     public MainWindow() {
         
+        // SeaGlassLookAndFeel laf = new SeaGlassLookAndFeel();
+        // AeroLookAndFeel laf = new AeroLookAndFeel();
+        NimbusLookAndFeel laf = new NimbusLookAndFeel();
+        
         try {
-            UIManager.setLookAndFeel(new SeaGlassLookAndFeel());
+            UIManager.setLookAndFeel(laf);
         } catch (UnsupportedLookAndFeelException ex) {
             Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -86,7 +91,7 @@ public class MainWindow extends javax.swing.JFrame {
                         .addComponent(stockSearchTextField)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(stockSearchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 597, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
