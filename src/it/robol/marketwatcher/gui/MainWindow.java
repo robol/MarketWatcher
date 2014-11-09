@@ -9,9 +9,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import com.seaglasslookandfeel.SeaGlassLookAndFeel;
-import com.jtattoo.plaf.aero.AeroLookAndFeel;
-import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
 /**
  *
@@ -24,16 +21,16 @@ public class MainWindow extends javax.swing.JFrame {
      */
     public MainWindow() {
         
-        // SeaGlassLookAndFeel laf = new SeaGlassLookAndFeel();
-        // AeroLookAndFeel laf = new AeroLookAndFeel();
-        NimbusLookAndFeel laf = new NimbusLookAndFeel();
-        
-        try {
-            UIManager.setLookAndFeel(laf);
-        } catch (UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+        for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+            if ("Nimbus".equals(info.getName())) {
+                try {
+                    UIManager.setLookAndFeel(info.getClassName());
+                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+                    Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
-        
+                
         initComponents();
     }
 
@@ -61,6 +58,11 @@ public class MainWindow extends javax.swing.JFrame {
         jScrollPane1.setViewportView(stockListTable1);
 
         stockSearchButton.setText("Search Stock");
+        stockSearchButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stockSearchButtonActionPerformed(evt);
+            }
+        });
 
         jMenu1.setText("File");
 
@@ -112,6 +114,10 @@ public class MainWindow extends javax.swing.JFrame {
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
         System.exit(0);
     }//GEN-LAST:event_exitMenuItemActionPerformed
+
+    private void stockSearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stockSearchButtonActionPerformed
+        
+    }//GEN-LAST:event_stockSearchButtonActionPerformed
 
     /**
      * @param args the command line arguments

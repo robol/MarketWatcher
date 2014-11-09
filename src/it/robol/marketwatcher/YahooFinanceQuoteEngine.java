@@ -145,6 +145,11 @@ public class YahooFinanceQuoteEngine extends TimerTask implements StockQuoteEngi
         stocks.remove(s);
     }
     
+    @Override
+    public String[] searchTicket(String query) {
+        return new String[0];
+    }
+    
     /**
      * Test function used to check if th FinanceQuoteEngine actually
      * works. 
