@@ -28,4 +28,13 @@ public interface StockQuoteEngine {
      */
     public void removeStock(Stock s);
     
+    /**
+     * Lookup the database for a given ticket. 
+     * 
+     * @param query A ticket or its starting part. 
+     * @return A list of tickets that have been founded in the database
+     * and that match the given query. 
+     */
+    public String[] searchTicket(String query);
+    
 }

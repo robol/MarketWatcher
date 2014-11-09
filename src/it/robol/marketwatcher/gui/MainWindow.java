@@ -11,6 +11,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.UIManager.LookAndFeelInfo;
 import com.seaglasslookandfeel.SeaGlassLookAndFeel;
+import it.robol.marketwatcher.StockQuoteEngine;
 
 /**
  *
@@ -56,6 +57,11 @@ public class MainWindow extends javax.swing.JFrame {
         jScrollPane1.setViewportView(stockListTable1);
 
         stockSearchButton.setText("Search Stock");
+        stockSearchButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stockSearchButtonActionPerformed(evt);
+            }
+        });
 
         jMenu1.setText("File");
 
@@ -107,6 +113,10 @@ public class MainWindow extends javax.swing.JFrame {
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
         System.exit(0);
     }//GEN-LAST:event_exitMenuItemActionPerformed
+
+    private void stockSearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stockSearchButtonActionPerformed
+        
+    }//GEN-LAST:event_stockSearchButtonActionPerformed
 
     /**
      * @param args the command line arguments

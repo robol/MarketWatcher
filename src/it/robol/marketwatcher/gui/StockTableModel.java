@@ -7,6 +7,7 @@ package it.robol.marketwatcher.gui;
 
 import it.robol.marketwatcher.Stock;
 import it.robol.marketwatcher.StockListener;
+import it.robol.marketwatcher.WatchList;
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 
@@ -30,6 +31,16 @@ public class StockTableModel extends AbstractTableModel {
     
     public StockTableModel() {
         stocks = new ArrayList<>();
+    }
+    
+    /**
+     * Create a table model linked to a WatchList. 
+     * 
+     * @param list A valid WatchList whose internal ArrayList
+     * of Stocks will be used as reference. 
+     */
+    public StockTableModel(WatchList list) {
+        // stocks = list.getStockList();
     }
     
     public void addStock(Stock s) {        
